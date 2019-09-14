@@ -66,7 +66,7 @@ class AlgoStrategy(gamelib.AlgoCore):
         #elif game_state.turn_number % 2 == 0: #TODO not all the time
         else:
             gamelib.debug_write('BOBBA')
-            self.build_defences(game_state)
+            self.build_defences(game_state, 1)
             #self.deploy_defensive_strategy(game_state)
             #pass
         game_state.submit_turn()
@@ -79,53 +79,172 @@ class AlgoStrategy(gamelib.AlgoCore):
         for elt in encryptors:
             game_state.attempt_spawn(ENCRYPTOR, elt)
             #gamelib.spawn("You have {} cores".format(game_state.get_resource(game_state.CORES)))
-    def build_defences(self, game_state):
+    def build_defences(self, game_state, row):
         gamelib.debug_write("HELLO")
-        turn = game_state.turn_number
-        v0 = [[0, 13], [1, 13], [2, 13], [3, 13], [5, 13], [6, 13], [7, 13], [8, 13], [12, 13], [15, 13], [19, 13], [20, 13], [21, 13], [22, 13], [24, 13], [25, 13], [26, 13], [27, 13]]
-        v1 = [[9, 13], [11, 13], [16, 13], [18, 13]] # E
-        v2 = [[10, 13], [13, 13], [14, 13], [17, 13], [4, 11], [6, 11], [7, 11], [20, 11], [21, 11], [23, 11]] #D
-        v3 =  [[11, 11], [12, 11], [15, 11], [16, 11]] # E
-        v4 =  [[1, 12], [26, 12], [3, 11], [13, 11], [14, 11], [24, 11], [3, 10], [24, 10]] # D
+        if row == 0:
+            turn = game_state.turn_number
+            v0 = [[0, 13], [1, 13], [2, 13], [3, 13], [5, 13], [6, 13], [7, 13], [8, 13], [12, 13], [15, 13], [19, 13], [20, 13], [21, 13], [22, 13], [24, 13], [25, 13], [26, 13], [27, 13]]
+            v1 = [[9, 13], [11, 13], [16, 13], [18, 13]] # E
+            v2 = [[10, 13], [13, 13], [14, 13], [17, 13], [4, 11], [6, 11], [7, 11], [20, 11], [21, 11], [23, 11]] #D
+            v3 =  [[11, 11], [12, 11], [15, 11], [16, 11]] # E
+            v4 =  [[1, 12], [26, 12], [3, 11], [13, 11], [14, 11], [24, 11], [3, 10], [24, 10]] # D
 
-        # E D E D E D
-        v5 = [[5, 9], [6, 9], [7, 9], [8, 9], [9, 9], [10, 9], [11, 9], [12, 9], [13, 9], [14, 9], [15, 9], [16, 9], [17, 9], [18, 9], [19, 9], [20, 9], [22, 9], [6, 8]]
-        v6 = [[8, 11], [9, 11], [10, 11], [17, 11], [18, 11], [19, 11], [4, 10], [23, 10], [4, 9], [23, 9], [5, 8], [22, 8]]
-        v7 =  [[20, 7], [19, 7], [18, 7], [17, 7], [15, 7], [14, 7], [13, 7], [12, 7], [10, 7], [9, 7], [8, 7], [6, 7]]
-        v8 =  [[20, 6], [21, 7], [16, 7], [11, 7]]
-        v9 = [[19, 6], [9, 5], [10, 5], [11, 5], [12, 5], [15, 5], [16, 5], [17, 5], [19, 5]]
-        v10 = [[8, 5], [13, 5], [14, 5]]
-        v11 = [[16, 3], [15, 3], [14, 3], [13, 3], [12, 3]]
-        v12 = [[17, 3], [10, 3]]
-        v13 = [[12, 1], [13, 1], [15, 1]]
+            # E D E D E D
+            v5 = [[5, 9], [6, 9], [7, 9], [8, 9], [9, 9], [10, 9], [11, 9], [12, 9], [13, 9], [14, 9], [15, 9], [16, 9], [17, 9], [18, 9], [19, 9], [20, 9], [22, 9], [6, 8]]
+            v6 = [[8, 11], [9, 11], [10, 11], [17, 11], [18, 11], [19, 11], [4, 10], [23, 10], [4, 9], [23, 9], [5, 8], [22, 8]]
+            v7 =  [[20, 7], [19, 7], [18, 7], [17, 7], [15, 7], [14, 7], [13, 7], [12, 7], [10, 7], [9, 7], [8, 7], [6, 7]]
+            v8 =  [[20, 6], [21, 7], [16, 7], [11, 7]]
+            v9 = [[19, 6], [9, 5], [10, 5], [11, 5], [12, 5], [15, 5], [16, 5], [17, 5], [19, 5]]
+            v10 = [[8, 5], [13, 5], [14, 5]]
+            v11 = [[16, 3], [15, 3], [14, 3], [13, 3], [12, 3]]
+            v12 = [[17, 3], [10, 3]]
+            v13 = [[12, 1], [13, 1], [15, 1]]
 
-        random.shuffle(v0)
-        random.shuffle(v1)
-        random.shuffle(v2)
-        random.shuffle(v3)
-        random.shuffle(v4)
+            random.shuffle(v0)
+            random.shuffle(v1)
+            random.shuffle(v2)
+            random.shuffle(v3)
+            random.shuffle(v4)
 
-        all_tiers = [v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13]
+            all_tiers = [v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13]
 
-        total_monies = game_state.get_resource(game_state.CORES)
-        for i in range(len(all_tiers)):
-            if i > 5 and total_monies < 20:
-                return
-            for loc in all_tiers[i]:
-                # case for D
-                if i % 2 == 0:
-                    if not game_state.contains_stationary_unit(loc) and total_monies < 2:
+            total_monies = game_state.get_resource(game_state.CORES)
+            for i in range(len(all_tiers)):
+                if i > 5 and total_monies < 20:
+                    return
+                for loc in all_tiers[i]:
+                    # case for D
+                    if i % 2 == 0:
+                        if not game_state.contains_stationary_unit(loc) and total_monies < 2:
+                            return
+                        elif not game_state.contains_stationary_unit(loc):
+                            total_monies -=2
+                            game_state.attempt_spawn(DESTRUCTOR,loc)
+                    # case for E
+                    elif i % 2 == 1:
+                        if not game_state.contains_stationary_unit(loc) and total_monies < 1:
+                            return
+                        elif not game_state.contains_stationary_unit(loc):
+                            total_monies -=1
+                            game_state.attempt_spawn(ENCRYPTOR,loc)
+            #Also want to remove superflous items
+            all_items = []
+            for tier in all_tiers:
+                all_items += tier
+            for location in game_state.game_map:
+                if location not in all_items:
+                    game_state.attempt_remove(location)
+        if row == 1:
+            v0 = [[2, 12], [3, 12], [5, 12], [6, 12], [8, 12], [9, 12], [13, 12], [14, 12], [18, 12], [19, 12], [21, 12], [22, 12], [24, 12], [25, 12]]
+            v1 = [[0, 13], [1, 13], [11, 13], [16, 13], [26, 13], [27, 13]]
+            v2 = [[1, 12], [10, 12], [12, 12], [15, 12], [17, 12], [26, 12], [3, 10], [7, 10], [8, 10], [9, 10], [18, 10], [19, 10], [20, 10], [24, 10], [4, 9], [23, 9]]
+            v3 = [[11, 12], [16, 12], [13, 10], [14, 10]]
+            v4 = [[5, 10], [10, 10], [11, 10], [12, 10], [15, 10], [16, 10], [17, 10], [22, 10], [5, 9], [22, 9]]
+            v5 = [[7, 12], [20, 12], [6, 8], [7, 8], [8, 8], [9, 8], [10, 8], [12, 8], [13, 8], [14, 8], [15, 8], [17, 8], [18, 8], [19, 8], [21, 8], [21, 7]]
+            v6 = [[5, 8], [11, 8], [16, 8], [22, 8], [6, 7], [7, 7], [7, 6]]
+            v7 = [[20, 6], [19, 6], [18, 6], [16, 6], [14, 6], [13, 6], [11, 6], [9, 6]]
+            v8 =  [[10, 6], [12, 6], [15, 6], [17, 6], [18, 5], [19, 5], [18, 4]]
+            v9 = [[7, 13], [20, 13]]
+            v10 = [[9, 4], [10, 4], [11, 4], [12, 4], [13, 4], [14, 4], [15, 4], [16, 4]]
+            v11 =  [[10, 3], [11, 3]]
+            v12 = [[3, 13], [9, 13], [13, 13], [14, 13], [18, 13], [24, 13]]
+            v13 =  [[11, 2], [13, 2], [14, 2], [15, 2], [16, 2]]
+            v14 = [[14, 1], [15, 1]]
+
+            all_tiers = [v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14]
+            DFDEDEDEDFEDFEE
+            encryptors = [3,5,7,10,13,14]
+            filters = [1,9,12]
+            destructors = [0,2,4,6,8,11]
+            total_monies = game_state.get_resource(game_state.CORES)
+            for i in range(len(all_tiers)):
+                if i > 5 and total_monies < 20:
+                    return
+                for loc in all_tiers[i]:
+                    # case for D
+                    if i in destructors:
+                        if not game_state.contains_stationary_unit(loc) and total_monies < 2:
+                            return
+                        elif not game_state.contains_stationary_unit(loc):
+                            total_monies -=2
+                            game_state.attempt_spawn(DESTRUCTOR,loc)
+                    # case for E
+                    elif i in encryptors:
+                        if not game_state.contains_stationary_unit(loc) and total_monies < 1:
+                            return
+                        elif not game_state.contains_stationary_unit(loc):
+                            total_monies -=1
+                            game_state.attempt_spawn(ENCRYPTOR,loc)
+                    elif i in filters:
+                        if not game_state.contains_stationary_unit(loc) and total_monies < 3:
+                            return
+                        elif not game_state.contains_stationary_unit(loc):
+                            total_monies -=3
+                            game_state.attempt_spawn(FILTER,loc)
+                #Also want to remove superflous items
+                all_items = []
+                for tier in all_tiers:
+                    all_items += tier
+                for location in game_state.game_map:
+                    if location not in all_items:
+                        game_state.attempt_remove(location)
+            if row == 3:
+                v0 = [[2, 11], [3, 11], [4, 11], [6, 11], [7, 11], [8, 11], [9, 11], [13, 11], [14, 11], [18, 11], [19, 11], [20, 11], [21, 11], [23, 11], [24, 11], [25, 11]]
+                v1 = [[0, 13], [27, 13], [1, 12], [3, 12], [11, 12], [16, 12], [24, 12], [26, 12]]
+                v2 = [[6, 9], [10, 9], [11, 9], [12, 9], [15, 9], [16, 9], [17, 9], [21, 9]]
+                v3 = [[10, 11], [11, 11], [12, 11], [15, 11], [16, 11], [17, 11], [4, 9], [5, 9], [22, 9], [23, 9]]
+                v4 = [[8, 12], [19, 12]]
+                v5 = [[13, 9], [14, 9], [7, 8], [21, 8], [7, 7], [8, 7], [9, 7], [10, 7], [12, 7], [13, 7], [14, 7], [15, 7], [17, 7], [18, 7], [19, 7], [21, 7]]
+                v6 = [[7, 9], [9, 9], [18, 9], [20, 9], [6, 8], [22, 8], [11, 7], [16, 7]]
+                v7 = [[19, 5], [18, 5], [16, 5], [14, 5], [13, 5], [11, 5], [8, 5], [8, 6]]
+                v8 =  [[5, 8], [6, 7], [7, 6], [12, 5], [15, 5], [18, 4]]
+                v9 = [[2, 13], [13, 13], [14, 13], [25, 13]]
+                v10 = [[17, 4], [10, 3], [11, 3], [12, 3], [13, 3], [14, 3], [15, 3], [17, 3]]
+                v11 = [[10, 5], [17, 5], [11, 2]]
+                v12 = [[7, 13], [9, 13], [18, 13], [20, 13]]
+                v13 = [[12, 2], [12, 1], [14, 1], [15, 1]]
+                v14 = [[6, 12], [21, 12]]
+
+                all_tiers = [v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14]
+                DFDEFEDEDFEDFEF
+                encryptors = [3,5,7,10,13]
+                filters = [1,4,9,12,14]
+                destructors = [0,2,6,8,11]
+                total_monies = game_state.get_resource(game_state.CORES)
+                for i in range(len(all_tiers)):
+                    if i > 5 and total_monies < 20:
                         return
-                    elif not game_state.contains_stationary_unit(loc):
-                        total_monies -=2
-                        game_state.attempt_spawn(DESTRUCTOR,loc)
-                # case for E
-                elif i % 2 == 1:
-                    if not game_state.contains_stationary_unit(loc) and total_monies < 1:
-                        return
-                    elif not game_state.contains_stationary_unit(loc):
-                        total_monies -=1
-                        game_state.attempt_spawn(ENCRYPTOR,loc)
+                    for loc in all_tiers[i]:
+                        # case for D
+                        if i in destructors:
+                            if not game_state.contains_stationary_unit(loc) and total_monies < 2:
+                                return
+                            elif not game_state.contains_stationary_unit(loc):
+                                total_monies -=2
+                                game_state.attempt_spawn(DESTRUCTOR,loc)
+                        # case for E
+                        elif i in encryptors:
+                            if not game_state.contains_stationary_unit(loc) and total_monies < 1:
+                                return
+                            elif not game_state.contains_stationary_unit(loc):
+                                total_monies -=1
+                                game_state.attempt_spawn(ENCRYPTOR,loc)
+                        elif i in filters:
+                            if not game_state.contains_stationary_unit(loc) and total_monies < 3:
+                                return
+                            elif not game_state.contains_stationary_unit(loc):
+                                total_monies -=3
+                                game_state.attempt_spawn(FILTER,loc)
+                #Also want to remove superflous items
+                all_items = []
+                for tier in all_tiers:
+                    all_items += tier
+                for location in game_state.game_map:
+                    if location not in all_items:
+                        game_state.attempt_remove(location)
+            random.shuffle(v2)
+
+
 
 
     """
